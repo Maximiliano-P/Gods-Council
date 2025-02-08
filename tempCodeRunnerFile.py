@@ -1,0 +1,1 @@
+screen.blit(CadeiraJuiz,(WIDTH,HEIGHT))
