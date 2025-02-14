@@ -2,15 +2,10 @@ import pygame
 import random
 import time
 from os.path import join
-def run(): 
 
+def run(tela, largura, altura):
     # Inicializa o Pygame
     pygame.init()
-
-    # Configurações da tela
-    SCREEN_WIDTH = 800
-    SCREEN_HEIGHT = 600
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Desvie dos Objetos")
 
     # Cores
@@ -18,10 +13,10 @@ def run():
     RED = (255, 0, 0)
 
     # Carrega o sprite do jogador
-    player_image = pygame.image.load(join('fundos','OBJECTION.png'))  # Substitua pelo caminho da sua imagem
-    player_image = pygame.transform.scale(player_image,(100,100))
-    player_rect = player_image.get_frect()
-    player_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT - 50)
+    player_image = pygame.image.load(join('fundos', 'OBJECTION.png'))  # Substitua pelo caminho da sua imagem
+    player_image = pygame.transform.scale(player_image, (100, 100))
+    player_rect = player_image.get_rect()
+    player_rect.center = (largura // 2, altura - 50)
 
     # Velocidade do jogador
     player_speed = 5
@@ -38,7 +33,7 @@ def run():
 
     # Função para spawnar objetos
     def spawn_object():
-        x = random.randint(0, SCREEN_WIDTH)
+        x = random.randint(0, largura)
         y = 0
         obj_rect = pygame.Rect(x, y, 30, 30)  # Tamanho do objeto
         objects.append(obj_rect)
@@ -61,7 +56,7 @@ def run():
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] and player_rect.left > 0:
             player_rect.x -= player_speed
-        if keys[pygame.K_RIGHT] and player_rect.right < SCREEN_WIDTH:
+        if keys[pygame.K_RIGHT] and player_rect.right < largura:
             player_rect.x += player_speed
 
         # Spawn de objetos
@@ -78,13 +73,13 @@ def run():
                 running = False
 
         # Remove objetos que saíram da tela
-        objects = [obj for obj in objects if obj.y < SCREEN_HEIGHT]
+        objects = [obj for obj in objects if obj.y < altura]
 
         # Desenha tudo na tela
-        screen.fill(WHITE)
-        screen.blit(player_image, player_rect)
+        tela.fill(WHITE)
+        tela.blit(player_image, player_rect)
         for obj in objects:
-            pygame.draw.rect(screen, RED, obj)
+            pygame.draw.rect(tela, RED, obj)
 
         pygame.display.flip()
 
@@ -92,7 +87,10 @@ def run():
         pygame.time.Clock().tick(60)
 
     # Finaliza o Pygame
-    pygame.quit()
 
 if __name__ == '__main__':
-    run()
+    # Configurações da tela
+    SCREEN_WIDTH = 800
+    SCREEN_HEIGHT = 600
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    run(screen, SCREEN_WIDTH, SCREEN_HEIGHT)
