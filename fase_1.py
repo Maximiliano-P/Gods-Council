@@ -47,8 +47,8 @@ def run(tela, altura, largura):
                 self.rect.center=posicoesEx[2]
 
     all_sprites = pygame.sprite.Group()
-    pasta = 'Capturas de tela'  # Diretório onde as imagens estão armazenadas
-    sprites_img = ['farael.png', 'rafael.png', '1.png', '2.png', '3.png', '4.png', '5.png']
+    pasta = 'imagens'  # Diretório onde as imagens estão armazenadas
+    sprites_img = ['nota1.png', 'nota2.png', 'nota3.png', 'nota4.png', 'nota5.png', 'nota6.png', 'nota7.png']
 
     x_pos = 100  # Posição inicial x
 
