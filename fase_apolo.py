@@ -1,5 +1,7 @@
 import pygame
 from os.path import join
+import random
+import numpy as np
 #https://freesound.org/people/Jaz_the_MAN_2/packs/17749/
 def run(tela, altura, largura):
     # pygame setup
