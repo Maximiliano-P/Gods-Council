@@ -31,6 +31,7 @@ def run(tela, altura, largura):
                         if estado == self.rect:
                             Sprites.slots[slot]='livre'
                             break
+                    self.TaEmUmSlot=False
                 else:
                     for slot,estado in Sprites.slots.items():
                         if estado == 'livre':
