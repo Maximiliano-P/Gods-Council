@@ -7,7 +7,7 @@ def run(SCREEN, WIDTH, HEIGHT):
     speed = 5
 
     while running:
-        SCREEN.fill((255, 255, 255))
+        SCREEN.fill((255, 255, 255))  
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -26,6 +26,13 @@ def run(SCREEN, WIDTH, HEIGHT):
         if keys[pygame.K_DOWN] and y + size < HEIGHT:
             y += speed
 
-        pygame.draw.rect(SCREEN, (0, 255, 0), (x, y, size, size))
+        points = [(x, y - size), (x - size, y + size), (x + size, y + size)]
+        pygame.draw.polygon(SCREEN, (255, 0, 0), points)
         pygame.display.flip()
         pygame.time.delay(30)
+
+if __name__ =="__main__":
+    largura,altura=1280,720
+    tela = pygame.display.set_mode((largura, altura))
+    run(tela, altura, largura)
+    pygame.quit()

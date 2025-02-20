@@ -1,5 +1,6 @@
 import pygame
 from os.path import join
+import random
 #https://freesound.org/people/Jaz_the_MAN_2/packs/17749/
 def run(tela, altura, largura):
     # pygame setup
@@ -15,7 +16,11 @@ def run(tela, altura, largura):
         posLista=0
         def __init__(self, *groups, pasta=str, ImgPath=str, x=0, y=0):
             super().__init__(*groups)
-            self.image = pygame.image.load(join(pasta, ImgPath)).convert_alpha()
+            try:
+                self.image = pygame.image.load(join(pasta, ImgPath)).convert_alpha()
+            except FileNotFoundError:
+                self.image = pygame.surface.Surface((100,100))
+                self.image.fill((random.randint(0,255),random.randint(0,255),random.randint(0,255)))
             self.image = pygame.transform.scale(self.image, (100, 100))
             self.numero =Sprites.NumeroIstancia
             self.rect = self.image.get_frect(center=(x, y)) #cria um retangulo pra cada sprite
@@ -31,13 +36,14 @@ def run(tela, altura, largura):
                         if estado == self.rect:
                             Sprites.slots[slot]='livre'
                             break
+                    self.TaEmUmSlot=False
                 else:
                     for slot,estado in Sprites.slots.items():
                         if estado == 'livre':
                             Sprites.slots[slot]=self.rect
                             break
-                    print(Sprites.slots)
                     self.TaEmUmSlot=True
+
         def update(self):
             if self.rect==Sprites.slots['slot1']:
                 self.rect.center=posicoesEx[0]

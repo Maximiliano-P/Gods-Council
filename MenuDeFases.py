@@ -1,6 +1,6 @@
 import pygame
 from os.path import join
-import fase_1, fase_2, fase_3, fase_4, fase_5, fase_hera  # Importando todas as fases
+import fase_Apolo, testes, fase_3, fase_Hefesto, fase_5, fase_hera  # Importando todas as fases
 
 # Inicializa o Pygame
 pygame.init()
@@ -44,13 +44,13 @@ buttons = [
 # Função para carregar a fase
 def load_fase(fase):
     if fase == 1:
-        fase_1.run(SCREEN, WIDTH, HEIGHT)
+        fase_Apolo.run(SCREEN, WIDTH, HEIGHT)
     elif fase == 2:
-        fase_2.run(SCREEN, WIDTH, HEIGHT)
+        testes.run(SCREEN, WIDTH, HEIGHT)
     elif fase == 3:
         fase_3.run(SCREEN, WIDTH, HEIGHT)
     elif fase == 4:
-        fase_4.run(SCREEN, WIDTH, HEIGHT)
+        fase_Hefesto.run(SCREEN, WIDTH, HEIGHT)
     elif fase == 5:
         fase_5.run(SCREEN, WIDTH, HEIGHT)
     elif fase == 6:
