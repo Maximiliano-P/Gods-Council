@@ -62,7 +62,7 @@ def run(tela, altura, largura):
 
     class Sprites(pygame.sprite.Sprite):
         slots = {'slot1': 'livre', 'slot2': 'livre', 'slot3': 'livre'}
-        resposta={'slot1': 'livre', 'slot2': 'livre', 'slot3': 'livre'}
+        resposta=['livre', 'livre','livre']
         respostacerta=[do,re,mi]
         NumeroIstancia = 1
         posLista = 0
@@ -117,10 +117,12 @@ def run(tela, altura, largura):
             elif self.rect == Sprites.slots['slot3']:
                 self.rect.center = posicoesEx[2]
         
-        @classmethod
-        def ganhou(cls):
-            if cls.resposta['slot1'].isalpha():
-                print('vazio')
+        def ganhou(self):
+            if Sprites.slots['slot1']=='livre':
+                print(Sprites.slots['slot1'])
+            else:
+                if Sprites.resposta==Sprites.respostacerta:
+                    print('gg')
 
 
     all_sprites = pygame.sprite.Group()
@@ -147,7 +149,7 @@ def run(tela, altura, largura):
         # Fill the screen with a color to wipe away anything from last frame
         tela.fill("purple")
         all_sprites.update()
-        Sprites.ganhou()
+        TocarRes.ganhou()
         all_sprites.draw(tela)
         # RENDER YOUR GAME HERE
         # flip() the display to put your work on screen
