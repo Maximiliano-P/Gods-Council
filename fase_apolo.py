@@ -39,7 +39,7 @@ def run(tela, altura, largura):
         def __add__(self,*instancias):
             senoide=self.__tom
             duracao=self.__duracao
-            NumeroDeInstanciasSomadas=1
+            NumeroDeInstanciasSomadas=0
             for instancia in instancias:
                 senoide= np.concatenate([senoide,instancia.get_tom()])
                 duracao= duracao+instancia.get_duracao()
