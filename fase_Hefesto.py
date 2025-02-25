@@ -3,10 +3,22 @@ import random
 import time
 from os.path import join
 class player(pygame.sprite.Sprite):
-    def __init__(self, *groups):
+    def __init__(self, *groups,path):
         super().__init__(*groups)
         self.velocidade=400
         self.direcao=pygame.Vector2(0,0)
+        self.vida=1
+        self.armadura=0
+        self.image=pygame.image.load(join('imagens',path))
+        self.rect=self.image.get_frect(center=(400,400))
+
+
+all_sprites=pygame.sprite.Group()
+atena=player(all_sprites,path='banana2.png')
+a_largura, a_altura= atena.image.get_size()
+mult=50/a_altura
+atena.image=pygame.transform.scale(atena.image,(mult*a_largura,mult*a_altura))
+print(mult*a_largura,mult*a_altura)
 
 def run(tela, largura, altura):
     pygame.init()
@@ -74,9 +86,9 @@ def run(tela, largura, altura):
                 running = False
 
         objects = [obj for obj in objects if obj.y < altura]
-
         tela.fill(WHITE)
         tela.blit(player_image, player_rect)
+        all_sprites.draw(tela)
         for obj in objects:
             pygame.draw.rect(tela, RED, obj)
 
