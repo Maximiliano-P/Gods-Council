@@ -2,23 +2,30 @@ import pygame
 import random
 import time
 from os.path import join
-class player(pygame.sprite.Sprite):
-    def __init__(self, *groups,path):
-        super().__init__(*groups)
-        self.velocidade=400
+class Player(pygame.sprite.Sprite):
+    def __init__(self, groups,path):
+        super().__init__(groups)
+        self.velocidade=300
         self.direcao=pygame.Vector2(0,0)
         self.vida=1
         self.armadura=0
+        self.altura=50
+        #carregando imagem e redimencionando pra que ela tenha a altura desejada sem distorções
         self.image=pygame.image.load(join('imagens',path))
+        self.mult=self.altura/self.image.get_size()[0]
+        self.redimencionado=(self.image.get_size()[0]*self.mult,self.image.get_size()[1]*self.mult)
+        self.image=pygame.transform.scale(self.image,(self.redimencionado))
         self.rect=self.image.get_frect(center=(400,400))
 
+    def update(self, dt):
+        #movimentação
+        keys= pygame.key.get_pressed()
+        self.direcao.x = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
+        self.direcao.y = keys[pygame.K_DOWN] - keys[pygame.K_UP]
+        #normalizando o movimento para não ir mais rápido do que deve nas diagonais
+        self.direcao= self.direcao.normalize() if self.direcao else self.direcao
+        self.rect.center+=self.direcao*self.velocidade*dt
 
-all_sprites=pygame.sprite.Group()
-atena=player(all_sprites,path='banana2.png')
-a_largura, a_altura= atena.image.get_size()
-mult=50/a_altura
-atena.image=pygame.transform.scale(atena.image,(mult*a_largura,mult*a_altura))
-print(mult*a_largura,mult*a_altura)
 
 def run(tela, largura, altura):
     pygame.init()
@@ -27,21 +34,6 @@ def run(tela, largura, altura):
     WHITE = (255, 255, 255)
     RED = (255, 0, 0)
 
-    # Tenta carregar a imagem do jogador
-    try:
-        player_image = pygame.image.load(join('imagens', 'nota6.png'))
-        player_image = pygame.transform.scale(player_image, (100, 100))
-    except FileNotFoundError:
-        # Cria um quadrado vermelho se a imagem não for encontrada
-        player_image = pygame.Surface((100, 100))
-        player_image.fill(RED)
-        print("Imagem não encontrada! Usando quadrado vermelho.")
-
-    player_rect = player_image.get_rect()
-    player_rect.center = (largura // 2, altura - 50)
-
-    # Restante do código permanece igual...
-    player_speed = 5
     objects = []
     object_speed = 5
     object_spawn_delay = 1000
@@ -49,14 +41,19 @@ def run(tela, largura, altura):
     game_duration = 30
     start_time = time.time()
 
+
+    all_sprites=pygame.sprite.Group()
+    personagem=Player(all_sprites,'banana1.png')
     def spawn_object():
         x = random.randint(0, largura)
         y = 0
         obj_rect = pygame.Rect(x, y, 30, 30)
         objects.append(obj_rect)
 
+    clock = pygame.time.Clock()
     running = True
     while running:
+        dt = clock.tick(60) / 1000
         current_time = time.time()
         elapsed_time = current_time - start_time
 
@@ -68,27 +65,19 @@ def run(tela, largura, altura):
             if event.type == pygame.QUIT:
                 running = False
 
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT] and player_rect.left > 0:
-            player_rect.x -= player_speed
-        if keys[pygame.K_RIGHT] and player_rect.right < largura:
-            player_rect.x += player_speed
-
         now = pygame.time.get_ticks()
         if now - last_object_spawn > object_spawn_delay:
             spawn_object()
             last_object_spawn = now
 
-        for obj in objects:
-            obj.y += object_speed
-            if obj.colliderect(player_rect):
-                print("Você foi atingido!")
-                running = False
+        
 
         objects = [obj for obj in objects if obj.y < altura]
-        tela.fill(WHITE)
-        tela.blit(player_image, player_rect)
+
+        tela.fill('WHITE')
+        all_sprites.update(dt)
         all_sprites.draw(tela)
+
         for obj in objects:
             pygame.draw.rect(tela, RED, obj)
 
