@@ -18,7 +18,7 @@ class Player(pygame.sprite.Sprite):
 
     def update(self, dt):
 
-        if self__vida<=0:
+        if self.__vida<=0:
             print('morreu')
             global running
             running=False
@@ -77,7 +77,7 @@ def run(tela, largura, altura):
     WHITE = (255, 255, 255)
     RED = (255, 0, 0)
 
-    game_duration = 10
+    game_duration = 30
     start_time = pygame.time.get_ticks()//1000
 
 
@@ -106,7 +106,9 @@ def run(tela, largura, altura):
             cooldown = 1  # Define o cooldown (1 segundo)
         cooldown -= 1*dt  # Reduz o cooldown
         
-        if pygame.sprite.spritecollide(personagem,)
+        if pygame.sprite.spritecollide(personagem,projeteis,True):
+            personagem.colidiu(projeteis)
+            pass
         
         tela.fill('WHITE')
         all_sprites.update(dt)
