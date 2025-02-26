@@ -19,8 +19,16 @@ class Player(pygame.sprite.Sprite):
     def update(self, dt):
         #movimentação
         keys= pygame.key.get_pressed()
-        self.direcao.x = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
-        self.direcao.y = keys[pygame.K_DOWN] - keys[pygame.K_UP]
+        if keys[pygame.K_RIGHT] or keys[pygame.K_LEFT]:
+            self.direcao.x = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT] 
+        else:
+            self.direcao.x = keys[pygame.K_d] - keys[pygame.K_a]
+        
+        if keys[pygame.K_UP] or keys[pygame.K_DOWN]:
+            self.direcao.y = keys[pygame.K_DOWN] - keys[pygame.K_UP]
+        else:
+            self.direcao.y = keys[pygame.K_s] - keys[pygame.K_w]
+
         #normalizando o movimento para não ir mais rápido do que deve nas diagonais
         self.direcao= self.direcao.normalize() if self.direcao else self.direcao
         self.rect.center+=self.direcao*self.velocidade*dt
@@ -45,7 +53,7 @@ def run(tela, largura, altura):
             
             #atributos para movimento
             self.direcao= pygame.Vector2(random.uniform(0,1),1)
-            self.velocidade= 400
+            self.velocidade= 500
 
         def update(self,dt):
             self.rect.center+=self.direcao*self.velocidade*dt
