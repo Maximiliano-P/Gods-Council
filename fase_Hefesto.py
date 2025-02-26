@@ -6,8 +6,8 @@ class Player(pygame.sprite.Sprite):
         super().__init__(groups)
         self.velocidade=300
         self.direcao=pygame.Vector2(0,0)
-        self.vida=1
-        self.armadura=0
+        self.__vida=5
+        self.__armadura=0
         self.altura=50
         #carregando imagem e redimencionando pra que ela tenha a altura desejada sem distorções
         self.image=pygame.image.load(join('imagens',path))
@@ -17,6 +17,11 @@ class Player(pygame.sprite.Sprite):
         self.rect=self.image.get_frect(center=(400,400))
 
     def update(self, dt):
+
+        if self__vida<=0:
+            print('morreu')
+            global running
+            running=False
         #movimentação
         keys= pygame.key.get_pressed()
         if keys[pygame.K_RIGHT] or keys[pygame.K_LEFT]:
@@ -32,6 +37,11 @@ class Player(pygame.sprite.Sprite):
         #normalizando o movimento para não ir mais rápido do que deve nas diagonais
         self.direcao= self.direcao.normalize() if self.direcao else self.direcao
         self.rect.center+=self.direcao*self.velocidade*dt
+    def colidiu(self,obj):
+        if self.__armadura:
+            self.__armadura-=1
+        else:
+            self.__vida-=1
 
 
 def run(tela, largura, altura):
@@ -39,8 +49,8 @@ def run(tela, largura, altura):
     pygame.display.set_caption("Desvie dos Objetos")
 
     class Projeteis(pygame.sprite.Sprite):
-        def __init__(self, groups):
-            super().__init__(groups)
+        def __init__(self, *groups):
+            super().__init__(*groups)
             self.tipo=random.choice(['marreta.png','blade of olympus.png','machado.png'])
             self.altura= 40 if self.tipo=='marreta.png' or self.tipo=='machado.png' else 50
             
@@ -55,11 +65,15 @@ def run(tela, largura, altura):
             self.direcao= pygame.Vector2(random.uniform(0,1),1)
             self.velocidade= 500
 
+
         def update(self,dt):
             self.rect.center+=self.direcao*self.velocidade*dt
 
             if self.rect.top>altura:
                 self.kill()
+
+        def colidiu(self,obj):
+            self.kill()
     WHITE = (255, 255, 255)
     RED = (255, 0, 0)
 
@@ -68,6 +82,7 @@ def run(tela, largura, altura):
 
 
     all_sprites=pygame.sprite.Group()
+    projeteis=pygame.sprite.Group()
     personagem=Player(all_sprites,'banana1.png')
 
     clock = pygame.time.Clock()
@@ -87,10 +102,12 @@ def run(tela, largura, altura):
             if event.type == pygame.QUIT:
                 running = False
         if cooldown <= 0:
-            Projeteis(all_sprites)
+            Projeteis((projeteis,all_sprites))
             cooldown = 1  # Define o cooldown (1 segundo)
         cooldown -= 1*dt  # Reduz o cooldown
-
+        
+        if pygame.sprite.spritecollide(personagem,)
+        
         tela.fill('WHITE')
         all_sprites.update(dt)
         all_sprites.draw(tela)
