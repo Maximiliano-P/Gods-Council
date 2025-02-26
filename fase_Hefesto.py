@@ -1,6 +1,5 @@
 import pygame
 import random
-import time
 from os.path import join
 class Player(pygame.sprite.Sprite):
     def __init__(self, groups,path):
@@ -31,32 +30,47 @@ def run(tela, largura, altura):
     pygame.init()
     pygame.display.set_caption("Desvie dos Objetos")
 
+    class Projeteis(pygame.sprite.Sprite):
+        def __init__(self, groups):
+            super().__init__(groups)
+            self.tipo=random.choice(['marreta.png','blade of olympus.png','machado.png'])
+            self.altura= 40 if self.tipo=='marreta.png' or self.tipo=='machado.png' else 50
+            
+            #carregando imagem e redimencionando pra que ela tenha a altura desejada sem distorções
+            self.image=pygame.image.load(join('imagens',self.tipo))
+            self.mult=self.altura/self.image.get_size()[0]
+            self.redimencionado=(self.image.get_size()[0]*self.mult,self.image.get_size()[1]*self.mult)
+            self.image=pygame.transform.scale(self.image,(self.redimencionado))
+            self.rect=self.image.get_frect(center=(random.randint(0,largura),0))
+            
+            #atributos para movimento
+            self.direcao= pygame.Vector2(random.uniform(0,1),1)
+            self.velocidade= 400
+
+        def update(self,dt):
+            self.rect.center+=self.direcao*self.velocidade*dt
+
+            if self.rect.top>altura:
+                self.kill()
     WHITE = (255, 255, 255)
     RED = (255, 0, 0)
 
-    objects = []
-    object_speed = 5
-    object_spawn_delay = 1000
-    last_object_spawn = pygame.time.get_ticks()
-    game_duration = 30
-    start_time = time.time()
+    game_duration = 10
+    start_time = pygame.time.get_ticks()//1000
 
 
     all_sprites=pygame.sprite.Group()
     personagem=Player(all_sprites,'banana1.png')
-    def spawn_object():
-        x = random.randint(0, largura)
-        y = 0
-        obj_rect = pygame.Rect(x, y, 30, 30)
-        objects.append(obj_rect)
 
     clock = pygame.time.Clock()
     running = True
+    cooldown=0
+    
     while running:
         dt = clock.tick(60) / 1000
-        current_time = time.time()
+        current_time = pygame.time.get_ticks()//1000
         elapsed_time = current_time - start_time
-
+        print(current_time)
         if elapsed_time >= game_duration:
             print("Tempo acabou! Você sobreviveu!")
             running = False
@@ -64,25 +78,17 @@ def run(tela, largura, altura):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-
-        now = pygame.time.get_ticks()
-        if now - last_object_spawn > object_spawn_delay:
-            spawn_object()
-            last_object_spawn = now
-
-        
-
-        objects = [obj for obj in objects if obj.y < altura]
+        if cooldown <= 0:
+            Projeteis(all_sprites)
+            cooldown = 1  # Define o cooldown (1 segundo)
+        cooldown -= 1*dt  # Reduz o cooldown
 
         tela.fill('WHITE')
         all_sprites.update(dt)
         all_sprites.draw(tela)
 
-        for obj in objects:
-            pygame.draw.rect(tela, RED, obj)
-
         pygame.display.flip()
-        pygame.time.Clock().tick(60)
+        pygame.time.Clock()
 
 if __name__ == '__main__':
     SCREEN_WIDTH = 800
