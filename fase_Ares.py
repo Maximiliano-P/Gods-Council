@@ -21,8 +21,8 @@ inicio, batalha, gameover, vitoria = "inicio", "batalha", "fim de jogo", "vitori
 
 
 # Carrega e transforma os sprites
-jogador_parado = pygame.transform.scale(pygame.image.load(join('imagens',"euvencia.jpg")), (50, 50))
-jogador_movendo = pygame.transform.scale(pygame.image.load(join("imagens", "euganhava.jpg")), (50, 50))
+jogador_parado = pygame.transform.scale(pygame.image.load(join('imagens',"nota7.png")), (50, 50))
+jogador_movendo = pygame.transform.scale(pygame.image.load(join("imagens", "nota2.png")), (50, 50))
 
 
 class Jogador(pygame.sprite.Sprite):
