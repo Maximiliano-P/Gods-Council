@@ -61,17 +61,23 @@ def run(tela, largura, altura):
             self.redimencionado=(self.image.get_size()[0]*self.mult,self.image.get_size()[1]*self.mult)
             self.image=pygame.transform.scale(self.image,(self.redimencionado))
             self.rect=self.image.get_frect(center=(random.randint(0,largura),0))
-            
+            self.image_orig=self.image
             #atributos para movimento
-            self.direcao= pygame.Vector2(random.uniform(0,1),1)
+            self.direcao= pygame.Vector2(random.uniform(0.2,0.8),1)
             self.velocidade= 500
+
+            self.rotacao=0
 
 
         def update(self,dt):
-            self.rect.center+=self.direcao*self.velocidade*dt
-
-            if self.rect.top>altura:
+            self.image=pygame.transform.rotate(self.image_orig,self.rotacao)
+            self.rotacao+=5
+            if self.rotacao>=360:
+                self.rotacao=0
+            
+            if self.rect.top>altura or self.rect.right<0 or self.rect.left>largura:
                 self.kill()
+            self.rect.center+=self.direcao*self.velocidade*dt
 
         def colidiu(self,obj):
             self.kill()
