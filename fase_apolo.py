@@ -125,7 +125,7 @@ def run(tela, altura, largura):
             else:
                 if Sprites.resposta==Sprites.respostacerta:
                     print('gg')
-
+                    pygame.event.post(pygame.event.Event(pygame.QUIT))
 
     all_sprites = pygame.sprite.Group()
     pasta = 'imagens'  # Diretório onde as imagens estão armazenadas
