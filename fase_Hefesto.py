@@ -119,7 +119,7 @@ def run():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return True
+                return False
         if cooldown <= 0:
             Projeteis((projeteis,all_sprites))
             cooldown = 1  # Define o cooldown (1 segundo)
