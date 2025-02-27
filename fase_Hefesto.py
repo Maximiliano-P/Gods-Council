@@ -20,8 +20,7 @@ class Player(pygame.sprite.Sprite):
 
         if self.__vida<=0:
             print('morreu')
-            global running
-            running=False
+            pygame.event.post(pygame.event.Event(pygame.QUIT))
         #movimentação
         keys= pygame.key.get_pressed()
         if keys[pygame.K_RIGHT] or keys[pygame.K_LEFT]:
@@ -55,7 +54,7 @@ def run(tela, largura, altura):
         def __init__(self, *groups):
             super().__init__(*groups)
             self.tipo=random.choice(['marreta.png','blade of olympus.png','machado.png'])
-            self.altura= 40 if self.tipo=='marreta.png' or self.tipo=='machado.png' else 50
+            self.altura= 60 if self.tipo=='marreta.png' or self.tipo=='machado.png' else 70
             
             #carregando imagem e redimencionando pra que ela tenha a altura desejada sem distorções
             self.image=pygame.image.load(join('imagens',self.tipo))
@@ -107,7 +106,7 @@ def run(tela, largura, altura):
         if cooldown <= 0:
             Projeteis((projeteis,all_sprites))
             cooldown = 1  # Define o cooldown (1 segundo)
-        cooldown -= 1*dt  # Reduz o cooldown
+        cooldown -= 1*dt*4  # Reduz o cooldown
         
         if pygame.sprite.spritecollide(personagem,projeteis,True):
             personagem.colidiu(projeteis)
