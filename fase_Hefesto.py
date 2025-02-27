@@ -1,46 +1,6 @@
 import pygame
 import random
 from os.path import join
-class Player(pygame.sprite.Sprite):
-    def __init__(self, groups,path):
-        super().__init__(groups)
-        self.velocidade=300
-        self.direcao=pygame.Vector2(0,0)
-        self.__vida=5
-        self.__armadura=0
-        self.altura=50
-        #carregando imagem e redimencionando pra que ela tenha a altura desejada sem distorções
-        self.image=pygame.image.load(join('imagens',path))
-        self.mult=self.altura/self.image.get_size()[0]
-        self.redimencionado=(self.image.get_size()[0]*self.mult,self.image.get_size()[1]*self.mult)
-        self.image=pygame.transform.scale(self.image,(self.redimencionado))
-        self.rect=self.image.get_frect(center=(400,400))
-
-    def update(self, dt):
-        #movimentação
-        keys= pygame.key.get_pressed()
-        if keys[pygame.K_RIGHT] or keys[pygame.K_LEFT]:
-            self.direcao.x = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT] 
-        else:
-            self.direcao.x = keys[pygame.K_d] - keys[pygame.K_a]
-        
-        if keys[pygame.K_UP] or keys[pygame.K_DOWN]:
-            self.direcao.y = keys[pygame.K_DOWN] - keys[pygame.K_UP]
-        else:
-            self.direcao.y = keys[pygame.K_s] - keys[pygame.K_w]
-
-        #normalizando o movimento para não ir mais rápido do que deve nas diagonais
-        self.direcao= self.direcao.normalize() if self.direcao else self.direcao
-        self.rect.center+=self.direcao*self.velocidade*dt
-    def colidiu(self,obj):
-        if self.__armadura:
-            self.__armadura-=1
-        else:
-            self.__vida-=1
-    def morreu(self):
-        if self.__vida<=0:
-            print('morreu')
-            return True
 
 def run(tela, largura, altura):
     largura = 800
@@ -49,6 +9,58 @@ def run(tela, largura, altura):
     pygame.init()
     pygame.display.set_caption("Desvie dos Objetos")
 
+    class Player(pygame.sprite.Sprite):
+        def __init__(self, groups,path):
+            super().__init__(groups)
+            self.velocidade=300
+            self.direcao=pygame.Vector2(0,0)
+            self.__vida=5
+            self.__armadura=0
+            self.altura=50
+            #carregando imagem e redimencionando pra que ela tenha a altura desejada sem distorções
+            self.image=pygame.image.load(join('imagens',path))
+            self.mult=self.altura/self.image.get_size()[0]
+            self.redimencionado=(self.image.get_size()[0]*self.mult,self.image.get_size()[1]*self.mult)
+            self.image=pygame.transform.scale(self.image,(self.redimencionado))
+            self.rect=self.image.get_frect(center=(400,400))
+
+        def update(self, dt):
+            #movimentação
+            keys= pygame.key.get_pressed()
+            if keys[pygame.K_RIGHT] or keys[pygame.K_LEFT]:
+                self.direcao.x = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT] 
+            else:
+                self.direcao.x = keys[pygame.K_d] - keys[pygame.K_a]
+            
+            if keys[pygame.K_UP] or keys[pygame.K_DOWN]:
+                self.direcao.y = keys[pygame.K_DOWN] - keys[pygame.K_UP]
+            else:
+                self.direcao.y = keys[pygame.K_s] - keys[pygame.K_w]
+
+            #evitando que saia da tela
+            if self.rect.top<=0 and self.direcao.y<0:
+                self.direcao.y=0
+            if self.rect.bottom>=altura and self.direcao.y>0:
+                self.direcao.y=0
+
+            if self.rect.left<=0 and self.direcao.x<0:
+                self.direcao.x=0
+            if self.rect.right>=largura and self.direcao.x>0:
+                self.direcao.x=0
+
+
+            #normalizando o movimento para não ir mais rápido do que deve nas diagonais
+            self.direcao= self.direcao.normalize() if self.direcao else self.direcao
+            self.rect.center+=self.direcao*self.velocidade*dt
+        def colidiu(self,obj):
+            if self.__armadura:
+                self.__armadura-=1
+            else:
+                self.__vida-=1
+        def morreu(self):
+            if self.__vida<=0:
+                print('morreu')
+                return True
     class Projeteis(pygame.sprite.Sprite):
         def __init__(self, *groups):
             super().__init__(*groups)
