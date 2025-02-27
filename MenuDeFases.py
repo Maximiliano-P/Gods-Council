@@ -46,7 +46,10 @@ def load_fase(fase):
     if fase == 1:
         fase_apolo.run()
     elif fase == 2:
-        fase_Hefesto.run()
+        if fase_Hefesto.run():
+            print('danada')
+        else:
+            print('paia')
     elif fase == 3:
         descartavel_afrodite.run()
     elif fase == 4:

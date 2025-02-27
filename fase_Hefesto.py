@@ -2,7 +2,7 @@ import pygame
 import random
 from os.path import join
 
-def run(tela, largura, altura):
+def run():
     largura = 800
     altura = 600
     tela = pygame.display.set_mode((largura, altura))
@@ -96,7 +96,7 @@ def run(tela, largura, altura):
     WHITE = (255, 255, 255)
     RED = (255, 0, 0)
 
-    game_duration = 30
+    game_duration = 10
     start_time = pygame.time.get_ticks()//1000
 
 
@@ -115,11 +115,11 @@ def run(tela, largura, altura):
         print(current_time)
         if elapsed_time >= game_duration:
             print("Tempo acabou! Você sobreviveu!")
-            running = False
+            return True
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                return True
         if cooldown <= 0:
             Projeteis((projeteis,all_sprites))
             cooldown = 1  # Define o cooldown (1 segundo)
@@ -129,7 +129,7 @@ def run(tela, largura, altura):
             personagem.colidiu(projeteis)
             pass
         if personagem.morreu():
-            running=False
+            return False
         tela.fill('WHITE')
         all_sprites.update(dt)
         all_sprites.draw(tela)
@@ -138,7 +138,4 @@ def run(tela, largura, altura):
         pygame.time.Clock()
 
 if __name__ == '__main__':
-    SCREEN_WIDTH = 800
-    SCREEN_HEIGHT = 600
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    run(screen, SCREEN_WIDTH, SCREEN_HEIGHT)
+    run()
