@@ -17,10 +17,6 @@ class Player(pygame.sprite.Sprite):
         self.rect=self.image.get_frect(center=(400,400))
 
     def update(self, dt):
-
-        if self.__vida<=0:
-            print('morreu')
-            pygame.event.post(pygame.event.Event(pygame.QUIT))
         #movimentação
         keys= pygame.key.get_pressed()
         if keys[pygame.K_RIGHT] or keys[pygame.K_LEFT]:
@@ -41,7 +37,10 @@ class Player(pygame.sprite.Sprite):
             self.__armadura-=1
         else:
             self.__vida-=1
-
+    def morreu(self):
+        if self.__vida<=0:
+            print('morreu')
+            return True
 
 def run(tela, largura, altura):
     largura = 800
@@ -111,7 +110,8 @@ def run(tela, largura, altura):
         if pygame.sprite.spritecollide(personagem,projeteis,True):
             personagem.colidiu(projeteis)
             pass
-        
+        if personagem.morreu():
+            running=False
         tela.fill('WHITE')
         all_sprites.update(dt)
         all_sprites.draw(tela)

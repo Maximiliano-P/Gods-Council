@@ -4,7 +4,7 @@ import random
 import numpy as np
 #https://freesound.org/people/Jaz_the_MAN_2/packs/17749/
 
-def run(tela, altura, largura):
+def run():
     # pygame setup
     pygame.init()
     pygame.mixer.init()  # Inicializa o mixer de áudio
@@ -121,11 +121,11 @@ def run(tela, altura, largura):
         
         def ganhou(self):
             if Sprites.slots['slot1']=='livre':
-                print(Sprites.slots['slot1'])
+                return False
             else:
                 if Sprites.resposta==Sprites.respostacerta:
                     print('gg')
-                    pygame.event.post(pygame.event.Event(pygame.QUIT))
+                    return True
 
     all_sprites = pygame.sprite.Group()
     pasta = 'imagens'  # Diretório onde as imagens estão armazenadas
@@ -151,7 +151,8 @@ def run(tela, altura, largura):
         # Fill the screen with a color to wipe away anything from last frame
         tela.fill("purple")
         all_sprites.update()
-        TocarRes.ganhou()
+        if TocarRes.ganhou():
+            running=False
         all_sprites.draw(tela)
         # RENDER YOUR GAME HERE
         # flip() the display to put your work on screen
@@ -159,7 +160,5 @@ def run(tela, altura, largura):
         clock.tick(60)  # Limits FPS to 60
 
 if __name__ == '__main__':
-    largura, altura = 1280, 720
-    tela = pygame.display.set_mode((largura, altura))
-    run(tela, altura, largura)
+    run()
     pygame.quit()

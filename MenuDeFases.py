@@ -44,9 +44,9 @@ buttons = [
 # Função para carregar a fase
 def load_fase(fase):
     if fase == 1:
-        fase_apolo.run(SCREEN, WIDTH, HEIGHT)
+        fase_apolo.run()
     elif fase == 2:
-        fase_Hefesto.run(SCREEN, WIDTH, HEIGHT)
+        fase_Hefesto.run()
     elif fase == 3:
         descartavel_afrodite.run()
     elif fase == 4:
