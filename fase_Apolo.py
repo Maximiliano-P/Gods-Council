@@ -152,7 +152,7 @@ def run():
         tela.fill("purple")
         all_sprites.update()
         if TocarRes.ganhou():
-            running=False
+            return True
         all_sprites.draw(tela)
         # RENDER YOUR GAME HERE
         # flip() the display to put your work on screen
