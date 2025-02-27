@@ -45,6 +45,9 @@ class Player(pygame.sprite.Sprite):
 
 
 def run(tela, largura, altura):
+    largura = 800
+    tela = 600
+    screen = pygame.display.set_mode((largura, altura))
     pygame.init()
     pygame.display.set_caption("Desvie dos Objetos")
 

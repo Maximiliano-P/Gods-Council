@@ -48,11 +48,11 @@ def load_fase(fase):
     elif fase == 2:
         fase_Hefesto.run(SCREEN, WIDTH, HEIGHT)
     elif fase == 3:
-        descartavel_afrodite.run(SCREEN, WIDTH, HEIGHT)
+        descartavel_afrodite.run()
     elif fase == 4:
-        descartavel_ares.run(SCREEN, WIDTH, HEIGHT)
+        descartavel_ares.run()
     elif fase == 5:
-        fase_hera2.run(SCREEN, WIDTH, HEIGHT)
+        fase_hera2.run()
    
 
 # Loop principal

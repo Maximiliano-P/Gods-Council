@@ -8,6 +8,8 @@ def run(tela, altura, largura):
     # pygame setup
     pygame.init()
     pygame.mixer.init()  # Inicializa o mixer de áudio
+    largura, altura = 1280, 720
+    tela = pygame.display.set_mode((largura, altura))
     clock = pygame.time.Clock()
     running = True
     posicoesEx = [[(largura / 2) - 110, 600], [largura / 2, 600], [(largura / 2) + 110, 600]]
