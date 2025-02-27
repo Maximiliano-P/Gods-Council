@@ -1,6 +1,6 @@
 import pygame
 from os.path import join
-import fase_apolo, fase_2, fase_3, fase_4, fase_5, hera_test  # Importando todas as fases
+import fase_apolo, fase_Hefesto, descartavel_afrodite, descartavel_ares, fase_hera2  # Importando todas as fases
 
 # Inicializa o Pygame
 pygame.init()
@@ -37,7 +37,7 @@ button_positions = [
 
 # Criar lista de botões
 buttons = [
-    Button(x, y, "fundos", "OBJECTION.png", i+1) 
+    Button(x, y, "imagens", "nuncatrai.jpg", i+1) 
     for i, (x, y) in enumerate(button_positions)
 ]
 
@@ -46,15 +46,14 @@ def load_fase(fase):
     if fase == 1:
         fase_apolo.run(SCREEN, WIDTH, HEIGHT)
     elif fase == 2:
-        fase_2.run(SCREEN, WIDTH, HEIGHT)
+        fase_Hefesto.run(SCREEN, WIDTH, HEIGHT)
     elif fase == 3:
-        fase_3.run(SCREEN, WIDTH, HEIGHT)
+        descartavel_afrodite.run(SCREEN, WIDTH, HEIGHT)
     elif fase == 4:
-        fase_4.run(SCREEN, WIDTH, HEIGHT)
+        descartavel_ares.run(SCREEN, WIDTH, HEIGHT)
     elif fase == 5:
-        fase_5.run(SCREEN, WIDTH, HEIGHT)
-    elif fase == 6:
-        hera_test.run(SCREEN, WIDTH, HEIGHT)
+        fase_hera2.run(SCREEN, WIDTH, HEIGHT)
+   
 
 # Loop principal
 running = True
