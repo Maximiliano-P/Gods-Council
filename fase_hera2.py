@@ -6,10 +6,10 @@ def run():
     # Inicializando o pygame
     pygame.init()
     clock = pygame.time.Clock()
+    global frase , tempo_em_tela
     tempo_em_tela = 0
     tempo_inicial = pygame.time.get_ticks()
     frases = ['Você pode fazer melhor que isso!', 'Tente melhor.', 'urg...', 'Eu pedi um BOM motivo...', 'Hahaha! atena.. você é ilaria!']
-
     frase = ""  # Definindo a variável de frase
     largura, altura = 800, 600
     tela = pygame.display.set_mode((largura, altura))
@@ -35,7 +35,7 @@ def run():
             self.posicaoOrigem = (x, y)
 
         def clicar(self, pos, frases):
-            global frase, tempo_em_tela  # Tornando as variáveis globais para acessar e alterar fora da função
+            global frase , tempo_em_tela  # Tornando as variáveis globais para acessar e alterar fora da função
             if self.rect.collidepoint(pos):
                 tempo_em_tela = pygame.time.get_ticks()  # Atualiza o tempo sempre que um clique ocorre
                 
@@ -78,5 +78,6 @@ def run():
 
         pygame.display.flip()
         clock.tick(60)
-
+if __name__== "__main__":
+    run()
 pygame.quit()
